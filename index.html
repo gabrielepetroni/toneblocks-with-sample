@@ -7,6 +7,7 @@
     <title>Toneblocks</title>
 
     <script src="bootstrap.min.js"></script>
+    <script>localStorage.clear()</script>
     <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img/tb.png">
@@ -44,6 +45,7 @@
     <script src="mq_blocks/mq_sequence.js"></script>
     <script src="mq_blocks/mq_4stepToneloop.js"></script>
     <script src="mq_blocks/mq_8stepToneloop.js"></script>
+    <script src="mq_blocks/mq_sample.js"></script>
     <script src="mq_blocks/mq_volume.js"></script>
     <script src="js/preload-functions.js"></script>
 
@@ -112,7 +114,19 @@
         <label for="volume">Volume:</label>
         <input type="range" name="volume" id="volume" min="0" max="100" value="100"><br />
         <div id="visualizer"></div>
-
+        <label for="sample">Upload Sample</label>
+        <input type="file" name="sample" id="sample" accept=".m4a, .midi" multiple>
+        <script>
+            const fileSelector = document.getElementById('sample');
+            fileSelector.onchange = function(){
+                sessionStorage.clear();
+                var files = this.files;
+                for(let i = 0; i < files.length; i++){
+                    sessionStorage.setItem(files[i].name, URL.createObjectURL(files[i]));
+                }
+            }
+        </script>
+        <audio id="audio_player">
     </div>
 
     <!-- create empty div for blockly -->
@@ -133,6 +147,7 @@
                         </block>
                     </value>
                 </block>
+                <block type="mq_sample"></block>
                 <!-- <block type="mq_instrument"></block> -->
                 <!-- <block type="mq_chord"></block> -->
                 <!-- <block type="mq_sequence"></block> -->
@@ -516,6 +531,7 @@
 
             // evaluate code
             try {
+                console.log(wrapCode);
                 eval(wrapCode);
             } catch (e) {
                 alert(e);
