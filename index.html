@@ -46,11 +46,11 @@
     <script src="mq_blocks/mq_4stepToneloop.js"></script>
     <script src="mq_blocks/mq_8stepToneloop.js"></script>
     <script src="mq_blocks/mq_sample.js"></script>
+    <script src="mq_blocks/mq_sample_loop.js"></script>
     <script src="mq_blocks/mq_volume.js"></script>
     <script src="js/preload-functions.js"></script>
 
 </head>
-
 <body>
 
 
@@ -117,12 +117,14 @@
         <label for="sample">Upload Sample</label>
         <input type="file" name="sample" id="sample" accept=".m4a, .midi" multiple>
         <script>
+            localStorage.clear();
+            localStorage.setItem("none", null);
             const fileSelector = document.getElementById('sample');
             fileSelector.onchange = function(){
-                sessionStorage.clear();
+                localStorage.clear();
                 var files = this.files;
                 for(let i = 0; i < files.length; i++){
-                    sessionStorage.setItem(files[i].name, URL.createObjectURL(files[i]));
+                    localStorage.setItem(files[i].name, URL.createObjectURL(files[i]));
                 }
             }
         </script>
@@ -132,7 +134,6 @@
     <!-- create empty div for blockly -->
     <div id="main">
         <div id="blocklyDiv"></div>
-
         <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
             <category name="Music" categorystyle="music_category">
                 <block type="mq_synth"></block>
@@ -148,6 +149,7 @@
                     </value>
                 </block>
                 <block type="mq_sample"></block>
+                <block type="mq_sample_loop"></block>
                 <!-- <block type="mq_instrument"></block> -->
                 <!-- <block type="mq_chord"></block> -->
                 <!-- <block type="mq_sequence"></block> -->
