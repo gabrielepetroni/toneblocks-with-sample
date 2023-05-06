@@ -124,7 +124,7 @@
                 localStorage.clear();
                 var files = this.files;
                 for(let i = 0; i < files.length; i++){
-                    localStorage.setItem(files[i].name, URL.createObjectURL(files[i]));
+                    localStorage.setItem(files[i].name.slice(0,-4), URL.createObjectURL(files[i]));                    
                 }
             }
         </script>
@@ -471,7 +471,7 @@
                 run.dataset.on = true;
                 run.innerText = 'Stop';
             } else {
-                Tone.Transport.stop();
+                Tone.Transport.stop();          
                 run.dataset.on = false;
                 run.innerText = 'Start';
             }
@@ -506,6 +506,10 @@
             seq.interval = sub;
         }
 
+        async function stopSamples() {
+            Tone.Players.stopAll("+0.5");
+        }
+
 
         // Tone.setContext(new Tone.Context({ latencyHint: "playback" }));
 
@@ -529,8 +533,6 @@
             wrapCode = code + `Tone.Transport.bpm.value = tempo.value;
             Tone.Transport.start();
             `
-
-
             // evaluate code
             try {
                 console.log(wrapCode);

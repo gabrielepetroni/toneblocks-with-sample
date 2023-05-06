@@ -38,9 +38,9 @@ Blockly.JavaScript['mq_sample'] = function(block) {
         }
     }
 
-    const code = `"${soundfileName}": "${soundfile}"\n`;
+    const code = `${soundfileName}: "${soundfile}",\n`;
 
-    // multiPlayer.add("${soundfileName}", "${soundfile}");
+    // multiPlayer.add(${soundfileName}, "${soundfile}");
 
     return code;
 }
