@@ -5,9 +5,12 @@ Blockly.Blocks['mq_sample'] = {
         this.appendDummyInput()
             .appendField("sample")
             .appendField(new Blockly.FieldDropdown(this.generateOptions), "sample");
-        this.appendValueInput('PITCH')
+        this.appendValueInput('pitch')
             .setCheck('Number')
-            .appendField("pitch")
+            .appendField("pitch");
+        this.appendValueInput("playback")
+            .setCheck('Number')
+            .appendField("playback")
         this.setNextStatement(true);
         this.setPreviousStatement(true);
         this.setOutput(false);
@@ -27,7 +30,8 @@ Blockly.Blocks['mq_sample'] = {
 
 Blockly.JavaScript['mq_sample'] = function(block) {
     const soundfile = block.getFieldValue('sample');
-    const pitch = block.getFieldValue('pitch');
+    const valuePitch = (Blockly.JavaScript.valueToCode(block, 'pitch', Blockly.JavaScript.ORDER_FUNCTION_CALL) || 1);
+    const valuePlayback = (Blockly.JavaScript.valueToCode(block, 'playback', Blockly.JavaScript.ORDER_FUNCTION_CALL) || 1);
     var soundfileName
 
     for(var i=0, len=localStorage.length; i<len; i++) {
@@ -39,6 +43,13 @@ Blockly.JavaScript['mq_sample'] = function(block) {
     }
 
     const code = `${soundfileName}: "${soundfile}",\n`;
+
+    var dict = {
+        pitch: valuePitch,
+        playback: valuePlayback,
+    }
+
+    sessionStorage.setItem(soundfileName, JSON.stringify(dict));
 
     // multiPlayer.add(${soundfileName}, "${soundfile}");
 

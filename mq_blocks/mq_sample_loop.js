@@ -2,7 +2,7 @@ Blockly.Blocks['mq_sample_loop'] = {
     init: function() {
         this.appendDummyInput()
             .appendField("Sample Loop");       
-        this.appendValueInput('INTERVAL')
+        this.appendValueInput('interval')
             .setCheck('Number')
             .appendField('interval');
         this.appendStatementInput('samples')
@@ -35,8 +35,10 @@ Blockly.JavaScript['mq_sample_loop'] = function(block) {
         return list
     }
 
-    function playSample(name, pitch) {
+    function playSample(name) {
         try{
+            var dict = JSON.parse(sessionStorage.getItem(name));
+            multiPlayer.player(name).playbackRate = dict.playback;           
             multiPlayer.player(name).start();
         } catch (err) {}
     }
@@ -51,12 +53,17 @@ Blockly.JavaScript['mq_sample_loop'] = function(block) {
                 else {
                     playSample(loadedSamples.shift());
                 }               
-            },${interval}).start(0);
+            },"${interval}s").start(0);
+    });
+
+    run.addEventListener('click', () => {
+        multiPlayer.dispose();
     });
     \n`;
     return code;
 };
-
-/** Tone.Transport.scheduleRepeat((time) => {
-    playSample(loadedSamples.shift()) }, 
-    ${interval});},${interval}); */      
+ 
+/** pitch_shift = new Tone.PitchShift({
+                pitch: dict.pitch
+                }).toDestination();
+            multiPlayer.player(name).connect(pitch_shift); */
