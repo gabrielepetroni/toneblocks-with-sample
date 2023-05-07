@@ -117,6 +117,7 @@
         <label for="sample">Upload Sample</label>
         <input type="file" name="sample" id="sample" accept=".m4a, .midi" multiple>
         <script>
+            sessionStorage.clear();
             localStorage.clear();
             localStorage.setItem("none", null);
             const fileSelector = document.getElementById('sample');
@@ -515,7 +516,6 @@
 
         // Generate JavaScript code and run it
         async function runCode() {
-            sessionStorage.clear();
             await Tone.start();
 
             // prevent infinite loop
