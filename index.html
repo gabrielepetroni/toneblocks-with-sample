@@ -36,6 +36,7 @@
         crossorigin="anonymous"></script>
 
     <!-- local -->
+    <script src="js/SampleManager.js"></script>
     <script src="mq_blocks/mq_synth.js"></script>
     <script src="mq_blocks/mq_ampenv.js"></script>
     <script src="mq_blocks/mq_4step.js"></script>
@@ -49,7 +50,6 @@
     <script src="mq_blocks/mq_sample_loop.js"></script>
     <script src="mq_blocks/mq_volume.js"></script>
     <script src="js/preload-functions.js"></script>
-
 </head>
 <body>
 
@@ -122,7 +122,6 @@
             localStorage.setItem("none", null);
             const fileSelector = document.getElementById('sample');
             fileSelector.onchange = function(){
-                localStorage.clear();
                 var files = this.files;
                 for(let i = 0; i < files.length; i++){
                     localStorage.setItem(files[i].name.slice(0,-4), URL.createObjectURL(files[i]));                    

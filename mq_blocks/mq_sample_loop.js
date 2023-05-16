@@ -13,15 +13,38 @@ Blockly.Blocks['mq_sample_loop'] = {
         this.setInputsInline(true);
         this.setStyle("music_blocks");
     },
+
+    onchange: function(event) {
+        try{
+            const interval = (Blockly.JavaScript.valueToCode(this, 'interval', Blockly.JavaScript.ORDER_FUNCTION_CALL) || 1)
+            const samples = Blockly.JavaScript.statementToCode(this, 'samples');
+            const code = `const samplesDict = {
+                `+samples+`
+            }
+
+            SampleManager.setInterval("${interval}");
+
+            SampleManager.addPlayers(samplesDict);`  
+           eval(code);
+        } catch (err) {
+            console.log(err)
+        }
+    }
 };
 
 Blockly.JavaScript['mq_sample_loop'] = function(block) {
-    eval(`var multiPlayer = new Tone.Players({}).toDestination()`)
     const interval = (Blockly.JavaScript.valueToCode(block, 'interval', Blockly.JavaScript.ORDER_FUNCTION_CALL) || 1);
-    const samplesCode = Blockly.JavaScript.statementToCode(block, 'samples')
-    if(samplesCode){
-        console.log(samplesCode)
-    }
+    const samplesCode = Blockly.JavaScript.statementToCode(block, 'samples');
+    SampleManager.setInterval(String(interval)+"s");
+    return code = `
+    SampleManager.startLoop();
+
+    run.addEventListener('click', () => {
+       SampleManager.stopEverything();
+    });
+    \n`;
+
+    /** 
 
     const code = `const multiPlayer = new Tone.Players({
         `+samplesCode+`
@@ -61,6 +84,7 @@ Blockly.JavaScript['mq_sample_loop'] = function(block) {
     });
     \n`;
     return code;
+    */
 };
  
 /** pitch_shift = new Tone.PitchShift({
