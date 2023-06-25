@@ -397,6 +397,25 @@
 
     <script>
 
+        document.onkeyup = function (e) {
+            if(e.which == 83 && e.ctrlKey) 
+            {
+                if (run.dataset.on == 'false') 
+                {
+                    runCode();
+                    run.dataset.on = true;
+                    run.innerText = 'Stop';
+                } else {
+                    Tone.Transport.stop();          
+                    run.dataset.on = false;
+                    run.innerText = 'Start';
+                }
+            } else if (e.keyCode == 40 && e.ctrlKey && e.shiftKey) {
+                const volume = document.getElementById('volume');
+                volume.value = volume.value + 1;
+            } 
+        }
+
         Blockly.Msg.MUSIC_HUE = 0;
         Blockly.Msg.LOGIC_HUE = 90;
         Blockly.Msg.MATH_HUE = 180;
@@ -463,6 +482,21 @@
             Tone.Destination.set({ volume: (-60 + (volume.value - 0) * (0 - -60) / (100 - 0)) });
             console.log(Tone.Destination.get());
         });
+        /**
+        volume.addEventListener('keydown' , function(e) {
+            if (e.which == 40 && e.ctrlKey && e.shiftKey) {
+                volume.value = +volume.value - +volume.step
+                Tone.Destination.set({ volume: (-60 + (volume.value - 0) * (0 - -60) / (100 - 0)) });
+                console.log(Tone.Destination.get());
+            }
+            if (e.which == 38 && e.ctrlKey && e.shiftKey) {
+                alert("A");
+                volume.value = +volume.value + +volume.step
+                Tone.Destination.set({ volume: (-60 + (volume.value - 0) * (0 - -60) / (100 - 0)) });
+                console.log(Tone.Destination.get());
+            }
+        }); 
+        */
 
         const run = document.getElementById('run');
         run.addEventListener('click', () => {
@@ -531,6 +565,8 @@
             // test adding Tone synth trigger
             wrapCode = code + `Tone.Transport.bpm.value = tempo.value;
             Tone.Transport.start();
+            Tone.Transport.loop = true;
+            Tone.Transport.loopEnd = 1;
             `
             // evaluate code
             try {

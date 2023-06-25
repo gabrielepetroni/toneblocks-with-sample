@@ -40,7 +40,7 @@ Blockly.JavaScript['mq_sample_loop'] = function(block) {
     SampleManager.startLoop();
 
     run.addEventListener('click', () => {
-       SampleManager.stopEverything();
+        SampleManager.resetPlayers();
     });
     \n`;
 
